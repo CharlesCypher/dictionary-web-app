@@ -1,0 +1,105 @@
+:root {
+    --clr-black: #000;
+    --clr-white: #fff;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body.dark-mode {
+    line-height: 1.5;
+    background-color: var(--clr-black);
+    color: var(--clr-white);
+    -webkit-font-smoothing: antialiased;
+}
+
+body.light-mode {
+    background-color: var(--clr-white);
+    color: var(--clr-black);
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+#root,
+#__next {
+    isolation: isolate;
+}
+
+.dictionary-showcase {
+    padding: 0 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+button {
+    background: none;
+    border: none;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+}
+
+.header-content-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-content-right>* {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.key-word-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
