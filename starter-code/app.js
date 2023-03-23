@@ -2,7 +2,7 @@ const containerDisplay = document.querySelector(".key-word-details");
 const searchBtn = document.querySelector(".search-btn");
 const keyWord = document.querySelector(".key-word");
 
-const searchInput = document.getElementById("searchInput").value;
+const searchInput = document.getElementById("searchInput");
 const url = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
 const errMsg = {
@@ -13,40 +13,52 @@ const errMsg = {
 
 async function loadResponse() {
   try {
-    let response = await fetch(url + searchInput);
+    let response = await fetch(url + searchInput.value);
     let data = await response.json();
-    console.log(data);
+    console.log(data.slice(0, 1));
     loadData(data);
   } catch (error) {
-    const randNum = Math.floor(Math.random() * Object.keys(errMsg).length);
-    let msg = [];
-    for (values in errMsg) {
-      msg.push(values);
-      //   console.log(msg[0]);
-      msg;
-      console.log(errMsg.title);
-      let m = msg[0];
-      console.log(m);
-      containerDisplay.innerHTML = errMsg.m;
-    }
+    containerDisplay.innerHTML = `<div class="loading-content">Oops, there was an error finding keyword :(</div>`;
     console.log(error);
   }
 }
 
 searchBtn.addEventListener("click", () => {
-  if (!searchInput) {
-    containerDisplay.innerHTML = `<div class="loading-content">Please input a value</div>`;
-  } else {
+  if (searchInput.value) {
     containerDisplay.innerHTML = `<div class="loading-content">Loading...</div>`;
     console.log("clicked");
     loadResponse();
+  } else {
+    containerDisplay.innerHTML = `<div class="loading-content">Please input a value</div>`;
   }
 });
 
+const definitions = [];
+const synonyms = [];
 function loadData(word) {
   containerDisplay.innerHTML = "";
-  const item = word.map((item) => {
+  const item = word.slice(0, 1).map((item) => {
     const { word, phonetics, meanings, sourceUrls } = item;
+    const definition = meanings[0].definitions;
+    for (const values in definition) {
+      if (definition.hasOwnProperty(values)) {
+        const allDefs = definition[values];
+        definitions.push(allDefs.definition);
+      }
+    }
+    const synonyms = meanings[0].synonyms;
+    console.log(synonyms);
+    for (const values in synonyms) {
+      if (synonyms.hasOwnProperty(values)) {
+        const allSyn = synonyms[values];
+        synonyms.push(allSyn.synonyms);
+      }
+    }
+    const defs = definitions
+      .map((item) => {
+        return `<li>${item}</li>`;
+      })
+      .join(" ");
     return ` <div class="key-word-container">
     <div class="key-word-content">
       <h2 class="key-word">${word}</h2>
@@ -61,16 +73,7 @@ function loadData(word) {
   <h4 class="noun">${meanings[0].partOfSpeech}</h4>
   <ul class="noun-meaning">
     Meaning
-    
-    <li>A set of keys used to operate a typewriter, computer etc.</li>
-    <li>
-      A component of many instruments including the piano, organ, and harpsichord consisting of usually black and white keys that cause
-      different tones to be produced when struck.
-    </li>
-    <li>
-      A device with kevs of a musical keyboard, used to control electronic sound-producing devices which may be built into or separate from
-      the keyboard device.
-    </li>
+    ${defs}
   </ul>
   <h4 class="synonyms">
     <span>electronic keyboard</span>
